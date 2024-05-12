@@ -1,3 +1,3 @@
 # bloc_example
 
-Example project with core BLoC concepts.
+Небольшой проект для демонстрации возможностей BLoC.
