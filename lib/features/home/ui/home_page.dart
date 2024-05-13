@@ -5,6 +5,7 @@ import 'package:bloc_example/features/home/bloc/users_bloc_state.dart';
 import 'package:bloc_example/features/home/model/user.dart';
 import 'package:bloc_example/features/home/repository/users_repository.dart';
 import 'package:bloc_example/features/home/ui/widgets/user_info_row.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,6 +25,13 @@ class HomePage extends StatelessWidget {
           usersRepository: di.get<UsersRepository>(),
         ),
         child: BlocBuilder<UsersBloc, UsersBlocState>(
+          buildWhen: (prev, curr) {
+            if (prev is UsersBlocStateLoaded && curr is UsersBlocStateLoaded) {
+              return !const DeepCollectionEquality().equals(prev.users, curr.users);
+            }
+
+            return true;
+          },
           builder: (context, state) {
             return switch (state) {
               UsersBlocStateLoading _ => const Center(
