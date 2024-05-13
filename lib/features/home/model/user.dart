@@ -17,6 +17,18 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is User &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          email == other.email &&
+          picture == other.picture;
+
+  @override
+  int get hashCode => name.hashCode ^ email.hashCode ^ picture.hashCode;
 }
 
 @JsonSerializable()
@@ -36,6 +48,18 @@ class Name {
   factory Name.fromJson(Map<String, dynamic> json) => _$NameFromJson(json);
 
   Map<String, dynamic> toJson() => _$NameToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Name &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          first == other.first &&
+          last == other.last;
+
+  @override
+  int get hashCode => title.hashCode ^ first.hashCode ^ last.hashCode;
 }
 
 @JsonSerializable()
@@ -53,4 +77,16 @@ class Picture {
   factory Picture.fromJson(Map<String, dynamic> json) => _$PictureFromJson(json);
 
   Map<String, dynamic> toJson() => _$PictureToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Picture &&
+          runtimeType == other.runtimeType &&
+          large == other.large &&
+          medium == other.medium &&
+          thumbnail == other.thumbnail;
+
+  @override
+  int get hashCode => large.hashCode ^ medium.hashCode ^ thumbnail.hashCode;
 }
