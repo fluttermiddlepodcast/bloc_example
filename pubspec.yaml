@@ -17,13 +17,14 @@ dependencies:
 
   collection:
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  freezed_annotation:
 
+dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner: ^2.4.8
   json_serializable: ^6.7.1
+
+  freezed:
 
 flutter:
   uses-material-design: true

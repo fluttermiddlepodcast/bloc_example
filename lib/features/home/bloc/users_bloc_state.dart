@@ -1,17 +1,13 @@
 import 'package:bloc_example/features/home/model/user.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-sealed class UsersBlocState {}
+part 'users_bloc_state.freezed.dart';
 
-class UsersBlocStateLoading extends UsersBlocState {}
-
-class UsersBlocStateLoaded extends UsersBlocState {
-  final List<User> users;
-
-  UsersBlocStateLoaded(this.users);
-}
-
-class UsersBlocStateError extends UsersBlocState {
-  final String error;
-
-  UsersBlocStateError(this.error);
+@freezed
+class UsersBlocState with _$UsersBlocState {
+  const factory UsersBlocState({
+    @Default(true) bool isLoading,
+    String? error,
+    @Default(<User>[]) List<User> users,
+  }) = _UsersBlocState;
 }

@@ -26,26 +26,24 @@ class HomePage extends StatelessWidget {
         ),
         child: BlocBuilder<UsersBloc, UsersBlocState>(
           buildWhen: (prev, curr) {
-            if (prev is UsersBlocStateLoaded && curr is UsersBlocStateLoaded) {
-              return !const DeepCollectionEquality().equals(prev.users, curr.users);
-            }
-
-            return true;
+            return !const DeepCollectionEquality().equals(prev.users, curr.users);
           },
           builder: (context, state) {
-            return switch (state) {
-              UsersBlocStateLoading _ => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              UsersBlocStateLoaded state => _UsersList(
-                  users: state.users,
-                ),
-              UsersBlocStateError state => Center(
-                  child: Text(
-                    state.error,
-                  ),
-                ),
-            };
+            if (state.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state.error == null) {
+              return _UsersList(
+                users: state.users,
+              );
+            }
+
+            return Center(
+              child: Text(
+                state.error!,
+              ),
+            );
           },
         ),
       ),
