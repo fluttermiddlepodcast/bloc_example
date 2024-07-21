@@ -1,7 +1,6 @@
 import 'package:bloc_example/core/di/di.dart';
-import 'package:bloc_example/features/home/bloc/users_bloc.dart';
-import 'package:bloc_example/features/home/bloc/users_bloc_event.dart';
-import 'package:bloc_example/features/home/bloc/users_bloc_state.dart';
+import 'package:bloc_example/features/home/bloc/users_cubit.dart';
+import 'package:bloc_example/features/home/bloc/users_cubit_state.dart';
 import 'package:bloc_example/features/home/model/user.dart';
 import 'package:bloc_example/features/home/repository/users_repository.dart';
 import 'package:bloc_example/features/home/ui/widgets/user_info_row.dart';
@@ -20,32 +19,28 @@ class HomePage extends StatelessWidget {
           'BLoC Example',
         ),
       ),
-      body: BlocProvider<UsersBloc>(
-        create: (_) => UsersBloc(
+      body: BlocProvider<UsersCubit>(
+        create: (_) => UsersCubit(
           usersRepository: di.get<UsersRepository>(),
-        ),
-        child: BlocBuilder<UsersBloc, UsersBlocState>(
-          buildWhen: (prev, curr) {
-            if (prev is UsersBlocStateLoaded && curr is UsersBlocStateLoaded) {
-              return !const DeepCollectionEquality().equals(prev.users, curr.users);
+        )..fetchUsers(),
+        child: BlocBuilder<UsersCubit, UsersCubitState>(
+          buildWhen: (prev, curr) => !const DeepCollectionEquality().equals(prev.users, curr.users),
+          builder: (context, state) {
+            if (state.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state.error != null) {
+              return Center(
+                child: Text(
+                  state.error!,
+                ),
+              );
             }
 
-            return true;
-          },
-          builder: (context, state) {
-            return switch (state) {
-              UsersBlocStateLoading _ => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              UsersBlocStateLoaded state => _UsersList(
-                  users: state.users,
-                ),
-              UsersBlocStateError state => Center(
-                  child: Text(
-                    state.error,
-                  ),
-                ),
-            };
+            return _UsersList(
+              users: state.users,
+            );
           },
         ),
       ),
@@ -63,9 +58,7 @@ class _UsersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async => context.read<UsersBloc>().add(
-            UsersBlocEventRefresh(),
-          ),
+      onRefresh: () async => context.read<UsersCubit>().refresh(),
       child: ListView.builder(
         itemBuilder: (_, index) => UserInfoRow(
           user: users[index],
