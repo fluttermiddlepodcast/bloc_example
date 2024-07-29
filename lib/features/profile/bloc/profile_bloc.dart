@@ -18,7 +18,7 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     );
 
     const timerDuration = Duration(
-      seconds: 10,
+      hours: 2,
     );
     timer = Timer.periodic(
       timerDuration,
