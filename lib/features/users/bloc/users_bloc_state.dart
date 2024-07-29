@@ -1,4 +1,4 @@
-import 'package:bloc_example/features/home/model/user.dart';
+import 'package:bloc_example/features/users/model/user.dart';
 
 sealed class UsersBlocState {}
 

@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:bloc_example/features/home/model/user.dart';
-import 'package:bloc_example/features/home/repository/users_repository.dart';
+import 'package:bloc_example/features/users/model/user.dart';
+import 'package:bloc_example/features/users/repository/users_repository.dart';
 import 'package:dio/dio.dart';
 
 class UsersRepositoryImpl extends UsersRepository {
