@@ -1,4 +1,4 @@
-import 'package:bloc_example/features/profile/model/profile.dart';
+import 'package:bloc_example/domain/profile/model/profile.dart';
 
 sealed class ProfileBlocState {}
 

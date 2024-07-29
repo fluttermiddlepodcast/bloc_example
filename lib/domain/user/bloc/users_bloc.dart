@@ -1,6 +1,6 @@
-import 'package:bloc_example/features/users/bloc/users_bloc_event.dart';
-import 'package:bloc_example/features/users/bloc/users_bloc_state.dart';
-import 'package:bloc_example/features/users/repository/users_repository.dart';
+import 'package:bloc_example/data/users/repository/users_repository.dart';
+import 'package:bloc_example/domain/user/bloc/users_bloc_event.dart';
+import 'package:bloc_example/domain/user/bloc/users_bloc_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {

@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:bloc_example/features/profile/bloc/profile_bloc_event.dart';
-import 'package:bloc_example/features/profile/bloc/profile_bloc_state.dart';
-import 'package:bloc_example/features/profile/model/profile.dart';
+import 'package:bloc_example/domain/profile/bloc/profile_bloc_event.dart';
+import 'package:bloc_example/domain/profile/bloc/profile_bloc_state.dart';
+import 'package:bloc_example/domain/profile/model/profile.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
