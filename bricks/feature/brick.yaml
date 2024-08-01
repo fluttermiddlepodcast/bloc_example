@@ -1,0 +1,10 @@
+name: feature
+description: Generate a new feature with configured BLoC
+version: 0.0.1
+
+vars:
+  name:
+    type: string
+    description: The name of a new feature
+    default: feature
+    prompt: What is your feature named?
