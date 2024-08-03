@@ -1,3 +1,5 @@
+import 'package:bloc_example/core/di/di.dart';
+import 'package:bloc_example/features/profile/bloc/profile_bloc.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_event.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_state.dart';
 import 'package:bloc_example/features/users/repository/users_repository.dart';
@@ -11,6 +13,10 @@ class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
     on<UsersBlocEventRefresh>(_onRefresh);
 
     add(UsersBlocEventFetch());
+
+    di.get<ProfileBloc>().stream.listen((event) {
+      add(UsersBlocEventRefresh());
+    });
   }
 
   Future<void> _onFetch(

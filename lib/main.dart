@@ -1,8 +1,6 @@
 import 'package:bloc_example/core/di/di.dart';
 import 'package:bloc_example/features/home/home_page.dart';
-import 'package:bloc_example/features/profile/bloc/profile_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> main() async {
   await initDI();
@@ -23,10 +21,7 @@ class BLoCExampleApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: BlocProvider<ProfileBloc>(
-        create: (context) => ProfileBloc(),
-        child: const HomePage(),
-      ),
+      home: const HomePage(),
     );
   }
 }

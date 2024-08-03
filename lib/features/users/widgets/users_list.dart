@@ -9,6 +9,7 @@ class UsersList extends StatelessWidget {
   final List<User> users;
 
   const UsersList({
+    super.key,
     required this.users,
   });
 

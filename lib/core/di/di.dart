@@ -1,4 +1,5 @@
 import 'package:bloc_example/core/network/dio.dart';
+import 'package:bloc_example/features/profile/bloc/profile_bloc.dart';
 import 'package:bloc_example/features/users/repository/users_repository.dart';
 import 'package:bloc_example/features/users/repository/users_repository_impl.dart';
 import 'package:dio/dio.dart';
@@ -12,5 +13,9 @@ Future<void> initDI() async {
     UsersRepositoryImpl(
       di.get<Dio>(),
     ),
+  );
+
+  di.registerSingleton<ProfileBloc>(
+    ProfileBloc(),
   );
 }
