@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (state.error == null) {
+            } else if (state.error.value == null) {
               return _UsersList(
                 users: state.users,
               );
@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
 
             return Center(
               child: Text(
-                state.error!,
+                state.error.value,
               ),
             );
           },

@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
   final UsersRepository usersRepository;
 
-  UsersBloc({required this.usersRepository}) : super(const UsersBlocState()) {
+  UsersBloc({required this.usersRepository}) : super(UsersBlocState.initial()) {
     on<UsersBlocEventFetch>(_onFetch);
     on<UsersBlocEventRefresh>(_onRefresh);
 
@@ -29,7 +29,7 @@ class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
       emit(
         state.copyWith(
           isLoading: false,
-          error: usersRes.$2,
+          error: NullableValue(value: usersRes.$2),
         ),
       );
     }
@@ -40,7 +40,7 @@ class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
     Emitter<UsersBlocState> emit,
   ) async {
     emit(
-      const UsersBlocState(
+      state.copyWith(
         isLoading: true,
       ),
     );
