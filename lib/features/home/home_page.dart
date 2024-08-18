@@ -15,45 +15,57 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'BLoC Example',
-        ),
+    return BlocProvider<UsersBloc>(
+      create: (context) => UsersBloc(
+        usersRepository: di.get<UsersRepository>(),
       ),
-      body: BlocProvider<UsersBloc>(
-        create: (_) => UsersBloc(
-          usersRepository: di.get<UsersRepository>(),
-        ),
-        child: BlocListener<ProfileBloc, ProfileBlocState>(
-          listener: (context, state) {
-            context.read<UsersBloc>().add(UsersBlocEventRefresh());
-          },
-          child: BlocBuilder<UsersBloc, UsersBlocState>(
-            buildWhen: (prev, curr) {
-              if (prev is UsersBlocStateLoaded && curr is UsersBlocStateLoaded) {
-                return !const DeepCollectionEquality().equals(prev.users, curr.users);
-              }
+      child: BlocConsumer<ProfileBloc, ProfileBlocState>(
+        listener: (context, state) {
+          context.read<UsersBloc>().add(UsersBlocEventRefresh());
+        },
+        builder: (context, state) {
+          return switch (state) {
+            ProfileBlocStateLoaded state => Scaffold(
+                appBar: AppBar(
+                  title: Text(
+                    "${state.profile.firstName} ${state.profile.lastName}",
+                  ),
+                ),
+                body: BlocBuilder<UsersBloc, UsersBlocState>(
+                  buildWhen: (prev, curr) {
+                    if (prev is UsersBlocStateLoaded && curr is UsersBlocStateLoaded) {
+                      return !const DeepCollectionEquality().equals(prev.users, curr.users);
+                    }
 
-              return true;
-            },
-            builder: (context, state) {
-              return switch (state) {
-                UsersBlocStateLoading _ => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                UsersBlocStateLoaded state => UsersList(
-                    users: state.users,
-                  ),
-                UsersBlocStateError state => Center(
-                    child: Text(
-                      state.error,
-                    ),
-                  ),
-              };
-            },
-          ),
-        ),
+                    return true;
+                  },
+                  builder: (context, state) {
+                    return switch (state) {
+                      UsersBlocStateLoading _ => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      UsersBlocStateLoaded state => UsersList(
+                          users: state.users,
+                        ),
+                      UsersBlocStateError state => Center(
+                          child: Text(
+                            state.error,
+                          ),
+                        ),
+                    };
+                  },
+                ),
+              ),
+            ProfileBlocStateLoading _ => const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ProfileBlocStateError state => Center(
+                child: Text(
+                  state.error,
+                ),
+              ),
+          };
+        },
       ),
     );
   }
