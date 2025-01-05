@@ -1,3 +1,4 @@
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_event.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_state.dart';
 import 'package:bloc_example/features/users/repository/users_repository.dart';
@@ -8,7 +9,10 @@ class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
 
   UsersBloc({required this.usersRepository}) : super(UsersBlocStateLoading()) {
     on<UsersBlocEventFetch>(_onFetch);
-    on<UsersBlocEventRefresh>(_onRefresh);
+    on<UsersBlocEventRefresh>(
+      _onRefresh,
+      transformer: droppable(),
+    );
 
     add(UsersBlocEventFetch());
   }
@@ -29,8 +33,6 @@ class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
     UsersBlocEventRefresh event,
     Emitter<UsersBlocState> emit,
   ) async {
-    emit(UsersBlocStateLoading());
-
     add(UsersBlocEventFetch());
   }
 }
