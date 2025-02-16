@@ -10,6 +10,7 @@ class UsersList extends StatelessWidget {
 
   const UsersList({
     required this.users,
+    super.key,
   });
 
   @override
@@ -23,6 +24,21 @@ class UsersList extends StatelessWidget {
           user: users[index],
         ),
         itemCount: users.length,
+      ),
+    );
+  }
+}
+
+class UsersListShimmer extends StatelessWidget {
+  const UsersListShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      children: List.generate(
+        12,
+        (_) => const UserInfoRowShimmer(),
       ),
     );
   }
