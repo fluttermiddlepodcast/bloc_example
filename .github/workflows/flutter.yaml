@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  analyze:
+  analyzer:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
       - name: Format code
         run: flutter analyze
 
-  format:
+  formatter:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
