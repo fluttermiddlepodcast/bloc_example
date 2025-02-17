@@ -39,9 +39,7 @@ class HomePage extends StatelessWidget {
             },
             builder: (context, state) {
               return switch (state) {
-                UsersBlocStateLoading _ => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                UsersBlocStateLoading _ => const UsersListShimmer(),
                 UsersBlocStateLoaded state => UsersList(
                     users: state.users,
                   ),
