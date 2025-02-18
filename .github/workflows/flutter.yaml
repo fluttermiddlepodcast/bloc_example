@@ -20,15 +20,12 @@ jobs:
           files: |
             **/*.dart
       - uses: kuhnroyal/flutter-fvm-config-action@v2
-        if: steps.changed-files.outputs.any_changed == 'true'
         id: fvm-config-action
       - uses: subosito/flutter-action@v2
-        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
           channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
       - name: Get dependencies
-        if: steps.changed-files.outputs.any_changed == 'true'
         run: flutter pub get
       - name: Format code
         if: steps.changed-files.outputs.any_changed == 'true'
@@ -45,15 +42,12 @@ jobs:
           files: |
             **/*.dart
       - uses: kuhnroyal/flutter-fvm-config-action@v2
-        if: steps.changed-files.outputs.any_changed == 'true'
         id: fvm-config-action
       - uses: subosito/flutter-action@v2
-        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
           channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
       - name: Get dependencies
-        if: steps.changed-files.outputs.any_changed == 'true'
         run: flutter pub get
       - name: Format code
         if: steps.changed-files.outputs.any_changed == 'true'
