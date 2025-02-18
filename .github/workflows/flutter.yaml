@@ -37,8 +37,8 @@ jobs:
           channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
       - name: Get dependencies
         run: flutter pub get
-      - name: Format code
-        run: flutter analyze ${{ needs.changes.changed-files.outputs.all_changed_files }}
+      - name: Analyze code
+        run: flutter analyze ${{ needs.changes.outputs.all_changed_files }}
 
   formatter:
     runs-on: ubuntu-latest
