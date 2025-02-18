@@ -11,28 +11,48 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            **/*.dart
       - uses: kuhnroyal/flutter-fvm-config-action@v2
+        if: steps.changed-files.outputs.any_changed == 'true'
         id: fvm-config-action
       - uses: subosito/flutter-action@v2
+        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
           channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
       - name: Get dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: flutter pub get
       - name: Format code
-        run: flutter analyze
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: flutter analyze ${{ steps.changed-files.outputs.all_changed_files }}
 
   formatter:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            **/*.dart
       - uses: kuhnroyal/flutter-fvm-config-action@v2
+        if: steps.changed-files.outputs.any_changed == 'true'
         id: fvm-config-action
       - uses: subosito/flutter-action@v2
+        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
           channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
       - name: Get dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: flutter pub get
       - name: Format code
-        run: dart format -l 120 ./lib --set-exit-if-changed
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: dart format -l 120 --set-exit-if-changed ${{ steps.changed-files.outputs.all_changed_files }}
