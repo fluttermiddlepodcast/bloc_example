@@ -40,15 +40,23 @@ class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
     ProfileBlocEventFetch event,
     Emitter<ProfileBlocState> emit,
   ) async {
-    emit(
-      ProfileBlocStateLoaded(
-        isLoggedIn: event.isLogIn,
-        profile: Profile(
-          firstName: 'Carlo',
-          lastName: 'Rivetti',
+    if (const bool.fromEnvironment('ERROR_WHILE_PROFILE_FETCH')) {
+      emit(
+        ProfileBlocStateError(
+          error: 'Something went wrong. Try again later',
         ),
-      ),
-    );
+      );
+    } else {
+      emit(
+        ProfileBlocStateLoaded(
+          isLoggedIn: event.isLogIn,
+          profile: Profile(
+            firstName: 'Carlo',
+            lastName: 'Rivetti',
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> _onLogIn(
