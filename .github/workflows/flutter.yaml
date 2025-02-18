@@ -3,10 +3,8 @@ name: Flutter
 on:
   push:
     branches: [ master ]
-    paths: [ 'lib/**' ]
   pull_request:
     branches: [ master ]
-    paths: [ 'lib/**' ]
 
 jobs:
   changes:
