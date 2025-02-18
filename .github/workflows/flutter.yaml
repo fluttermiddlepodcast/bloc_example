@@ -3,10 +3,10 @@ name: Flutter
 on:
   push:
     branches: [ master ]
-    paths: [ 'lib/**', '.github/workflows/**' ]
+    paths: [ 'lib/**' ]
   pull_request:
     branches: [ master ]
-    paths: [ 'lib/**', '.github/workflows/**' ]
+    paths: [ 'lib/**' ]
 
 jobs:
   changes:
