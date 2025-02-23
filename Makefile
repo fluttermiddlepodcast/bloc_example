@@ -16,3 +16,6 @@ build_runner:
 
 run:
 	fvm flutter run
+
+pre_commit:
+	fvm dart format -l 80 . --set-exit-if-changed
