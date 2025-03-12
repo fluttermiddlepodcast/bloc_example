@@ -10,9 +10,12 @@ class UsersRepositoryImpl extends UsersRepository {
   UsersRepositoryImpl(this.dio);
 
   @override
-  Future<(List<User>?, String?)> fetchUsers() async {
+  Future<(List<User>?, String?)> fetchUsers({
+    int limit = 30,
+    int page = 0,
+  }) async {
     try {
-      final res = await dio.get('?results=100');
+      final res = await dio.get('?page=$page&results=$limit');
       if (res.statusCode == HttpStatus.ok) {
         final rawUsers = res.data['results'] as List<dynamic>;
         final users = rawUsers.map((rawUser) => User.fromJson(rawUser)).toList();
