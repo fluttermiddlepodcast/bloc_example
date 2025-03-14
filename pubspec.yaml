@@ -13,7 +13,9 @@ dependencies:
 
   flutter_bloc: ^9.0.0
   bloc_concurrency: ^0.3.0
-  get_it: ^7.6.7
+  hydrated_bloc: ^10.0.0
+  path_provider: ^2.1.5
+  get_it: ^8.0.3
   json_annotation: ^4.8.1
   shimmer: ^3.0.0
 
@@ -23,8 +25,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
-  build_runner: ^2.4.8
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.15
   json_serializable: ^6.7.1
 
 flutter:
