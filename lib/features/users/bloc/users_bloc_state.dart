@@ -7,10 +7,12 @@ class UsersBlocStateLoading extends UsersBlocState {}
 class UsersBlocStateLoaded extends UsersBlocState {
   final List<User> users;
   final bool canLoadMore;
+  final int page;
 
   UsersBlocStateLoaded({
     required this.users,
     required this.canLoadMore,
+    required this.page,
   });
 }
 
