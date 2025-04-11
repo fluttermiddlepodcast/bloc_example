@@ -1,14 +1,13 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_event.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_state.dart';
-import 'package:bloc_example/features/users/model/user.dart';
 import 'package:bloc_example/features/users/repository/users_repository.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:replay_bloc/replay_bloc.dart';
 
-class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
+class UsersBloc extends ReplayBloc<UsersBlocEvent, UsersBlocState> {
   final UsersRepository usersRepository;
 
-  UsersBloc({required this.usersRepository}) : super(UsersBlocStateLoading()) {
+  UsersBloc({required this.usersRepository}) : super(UsersBlocState()) {
     on<UsersBlocEventFetch>(_onFetch);
     on<UsersBlocEventFetchMore>(
       _onFetchMore,
@@ -16,7 +15,7 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
     );
     on<UsersBlocEventRefresh>(_onRefresh);
 
-    if (state is UsersBlocStateLoading) {
+    if (state.status == UsersBlocStatus.loading) {
       add(UsersBlocEventFetch());
     }
   }
@@ -28,19 +27,31 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
     final usersRes = await usersRepository.fetchUsers(
       limit: 30,
       page: 0,
+      makeError: event.withRollback,
     );
     if (usersRes.$2 == null) {
       final users = usersRes.$1!;
 
       emit(
-        UsersBlocStateLoaded(
+        state.copyWith(
           users: users,
+          status: UsersBlocStatus.loaded,
           canLoadMore: users.length == 30,
           page: 1,
+          error: null,
         ),
       );
     } else {
-      emit(UsersBlocStateError(usersRes.$2!));
+      if (event.withRollback) {
+        undo();
+      } else {
+        emit(
+          state.copyWith(
+            status: UsersBlocStatus.error,
+            error: usersRes.$2!,
+          ),
+        );
+      }
     }
   }
 
@@ -48,37 +59,40 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
     UsersBlocEventFetchMore event,
     Emitter<UsersBlocState> emit,
   ) async {
-    if (state is! UsersBlocStateLoaded) {
+    if (state.status != UsersBlocStatus.loaded) {
       return;
     }
 
-    final currState = state as UsersBlocStateLoaded;
-
-    if (!currState.canLoadMore) {
+    if (!state.canLoadMore) {
       return;
     }
-
-    final page = currState.page;
 
     final usersRes = await usersRepository.fetchUsers(
       limit: 30,
-      page: page,
+      page: state.page,
     );
     if (usersRes.$2 == null) {
       final users = usersRes.$1!;
 
       emit(
-        UsersBlocStateLoaded(
+        state.copyWith(
           users: [
-            ...currState.users,
+            ...state.users,
             ...users,
           ],
+          status: UsersBlocStatus.loaded,
           canLoadMore: users.length == 30,
-          page: page + 1,
+          page: state.page + 1,
+          error: null,
         ),
       );
     } else {
-      emit(UsersBlocStateError(usersRes.$2!));
+      emit(
+        state.copyWith(
+          status: UsersBlocStatus.error,
+          error: usersRes.$2!,
+        ),
+      );
     }
   }
 
@@ -86,38 +100,19 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
     UsersBlocEventRefresh event,
     Emitter<UsersBlocState> emit,
   ) async {
-    emit(UsersBlocStateLoading());
+    emit(
+      state.copyWith(
+        users: [],
+        canLoadMore: true,
+        page: 0,
+        status: UsersBlocStatus.loading,
+      ),
+    );
 
-    add(UsersBlocEventFetch());
-  }
-
-  @override
-  UsersBlocState? fromJson(Map<String, dynamic> json) {
-    if (json.containsKey('users')) {
-      return UsersBlocStateLoaded(
-        users: (json['users'] as List)
-            .map(
-              (json) => User.fromJson(json),
-            )
-            .toList(),
-        canLoadMore: json['canLoadMore'] ?? true,
-        page: json['page'] ?? 0,
-      );
-    }
-
-    return null;
-  }
-
-  @override
-  Map<String, dynamic>? toJson(UsersBlocState state) {
-    if (state is UsersBlocStateLoaded) {
-      return {
-        'users': state.users.map((user) => user.toJson()).toList(),
-        'canLoadMore': state.canLoadMore,
-        'page': state.page,
-      };
-    }
-
-    return null;
+    add(
+      UsersBlocEventFetch(
+        withRollback: true,
+      ),
+    );
   }
 }

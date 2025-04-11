@@ -13,12 +13,20 @@ class UsersRepositoryImpl extends UsersRepository {
   Future<(List<User>?, String?)> fetchUsers({
     int limit = 30,
     int page = 0,
+    bool makeError = false,
   }) async {
     try {
+      if (makeError) {
+        await Future.delayed(const Duration(seconds: 2));
+
+        throw Exception('Exception from makeError argument');
+      }
+
       final res = await dio.get('?page=$page&results=$limit');
       if (res.statusCode == HttpStatus.ok) {
         final rawUsers = res.data['results'] as List<dynamic>;
-        final users = rawUsers.map((rawUser) => User.fromJson(rawUser)).toList();
+        final users =
+            rawUsers.map((rawUser) => User.fromJson(rawUser)).toList();
 
         return (users, null);
       }

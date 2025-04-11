@@ -1,8 +1,5 @@
 import 'package:bloc_example/core/di/di.dart';
-import 'package:bloc_example/features/profile/bloc/profile_bloc.dart';
-import 'package:bloc_example/features/profile/bloc/profile_bloc_state.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc.dart';
-import 'package:bloc_example/features/users/bloc/users_bloc_event.dart';
 import 'package:bloc_example/features/users/repository/users_repository.dart';
 import 'package:bloc_example/features/users/widgets/users_list.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +20,7 @@ class HomePage extends StatelessWidget {
         create: (_) => UsersBloc(
           usersRepository: di.get<UsersRepository>(),
         ),
-        child: BlocListener<ProfileBloc, ProfileBlocState>(
-          listener: (context, state) {
-            context.read<UsersBloc>().add(UsersBlocEventRefresh());
-          },
-          child: const UsersList(),
-        ),
+        child: const UsersList(),
       ),
     );
   }

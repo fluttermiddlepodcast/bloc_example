@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc_example/features/profile/bloc/profile_bloc_event.dart';
 import 'package:bloc_example/features/profile/bloc/profile_bloc_state.dart';
 import 'package:bloc_example/features/profile/model/profile.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:replay_bloc/replay_bloc.dart';
 
-class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState> {
+class ProfileBloc extends Bloc<ProfileBlocEvent, ProfileBlocState> {
   ProfileBloc() : super(ProfileBlocStateLoading()) {
     on<ProfileBlocEventFetch>(_onFetch);
     on<ProfileBlocEventLogIn>(_onLogIn);
@@ -92,29 +92,5 @@ class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState> {
     timer?.cancel();
 
     return super.close();
-  }
-
-  @override
-  ProfileBlocState? fromJson(Map<String, dynamic> json) {
-    if (json.containsKey('profile')) {
-      return ProfileBlocStateLoaded(
-        profile: Profile.fromJson(json['profile']),
-        isLoggedIn: json['isLoggedIn'] ?? true,
-      );
-    }
-
-    return null;
-  }
-
-  @override
-  Map<String, dynamic>? toJson(ProfileBlocState state) {
-    if (state is ProfileBlocStateLoaded) {
-      return {
-        'profile': state.profile.toJson(),
-        'isLoggedIn': state.isLoggedIn,
-      };
-    }
-
-    return null;
   }
 }

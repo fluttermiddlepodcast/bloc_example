@@ -2,7 +2,6 @@ import 'package:bloc_example/features/users/bloc/users_bloc.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_event.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_state.dart';
 import 'package:bloc_example/features/users/widgets/user_info_row.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,17 +34,10 @@ class _UsersListState extends State<UsersList> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UsersBloc, UsersBlocState>(
-      buildWhen: (prev, curr) {
-        if (prev is UsersBlocStateLoaded && curr is UsersBlocStateLoaded) {
-          return !const DeepCollectionEquality().equals(prev.users, curr.users);
-        }
-
-        return true;
-      },
       builder: (context, state) {
-        return switch (state) {
-          UsersBlocStateLoading _ => const UsersListShimmer(),
-          UsersBlocStateLoaded state => RefreshIndicator(
+        return switch (state.status) {
+          UsersBlocStatus.loading => const UsersListShimmer(),
+          UsersBlocStatus.loaded => RefreshIndicator(
               onRefresh: () async => context.read<UsersBloc>().add(
                     UsersBlocEventRefresh(),
                   ),
@@ -63,9 +55,9 @@ class _UsersListState extends State<UsersList> {
                 itemCount: state.users.length + (state.canLoadMore ? 1 : 0),
               ),
             ),
-          UsersBlocStateError state => Center(
+          UsersBlocStatus.error => Center(
               child: Text(
-                state.error,
+                state.error ?? 'Unknown error',
               ),
             ),
         };

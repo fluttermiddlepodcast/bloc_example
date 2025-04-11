@@ -4,5 +4,6 @@ abstract class UsersRepository {
   Future<(List<User>?, String?)> fetchUsers({
     int limit,
     int page,
+    bool makeError,
   });
 }
