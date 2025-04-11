@@ -26,8 +26,7 @@ mixin _$UsersBlocState {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
   $UsersBlocStateCopyWith<UsersBlocState> get copyWith =>
-      _$UsersBlocStateCopyWithImpl<UsersBlocState>(
-          this as UsersBlocState, _$identity);
+      _$UsersBlocStateCopyWithImpl<UsersBlocState>(this as UsersBlocState, _$identity);
 
   @override
   bool operator ==(Object other) {
@@ -35,21 +34,15 @@ mixin _$UsersBlocState {
         (other.runtimeType == runtimeType &&
             other is UsersBlocState &&
             const DeepCollectionEquality().equals(other.users, users) &&
-            (identical(other.canLoadMore, canLoadMore) ||
-                other.canLoadMore == canLoadMore) &&
+            (identical(other.canLoadMore, canLoadMore) || other.canLoadMore == canLoadMore) &&
             (identical(other.page, page) || other.page == page) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.error, error) || other.error == error));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(users),
-      canLoadMore,
-      page,
-      status,
-      error);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(users), canLoadMore, page, status, error);
 
   @override
   String toString() {
@@ -59,21 +52,14 @@ mixin _$UsersBlocState {
 
 /// @nodoc
 abstract mixin class $UsersBlocStateCopyWith<$Res> {
-  factory $UsersBlocStateCopyWith(
-          UsersBlocState value, $Res Function(UsersBlocState) _then) =
+  factory $UsersBlocStateCopyWith(UsersBlocState value, $Res Function(UsersBlocState) _then) =
       _$UsersBlocStateCopyWithImpl;
   @useResult
-  $Res call(
-      {List<User> users,
-      bool canLoadMore,
-      int page,
-      UsersBlocStatus status,
-      String? error});
+  $Res call({List<User> users, bool canLoadMore, int page, UsersBlocStatus status, String? error});
 }
 
 /// @nodoc
-class _$UsersBlocStateCopyWithImpl<$Res>
-    implements $UsersBlocStateCopyWith<$Res> {
+class _$UsersBlocStateCopyWithImpl<$Res> implements $UsersBlocStateCopyWith<$Res> {
   _$UsersBlocStateCopyWithImpl(this._self, this._then);
 
   final UsersBlocState _self;
@@ -161,21 +147,15 @@ class _UsersBlocState implements UsersBlocState {
         (other.runtimeType == runtimeType &&
             other is _UsersBlocState &&
             const DeepCollectionEquality().equals(other._users, _users) &&
-            (identical(other.canLoadMore, canLoadMore) ||
-                other.canLoadMore == canLoadMore) &&
+            (identical(other.canLoadMore, canLoadMore) || other.canLoadMore == canLoadMore) &&
             (identical(other.page, page) || other.page == page) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.error, error) || other.error == error));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_users),
-      canLoadMore,
-      page,
-      status,
-      error);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_users), canLoadMore, page, status, error);
 
   @override
   String toString() {
@@ -184,24 +164,16 @@ class _UsersBlocState implements UsersBlocState {
 }
 
 /// @nodoc
-abstract mixin class _$UsersBlocStateCopyWith<$Res>
-    implements $UsersBlocStateCopyWith<$Res> {
-  factory _$UsersBlocStateCopyWith(
-          _UsersBlocState value, $Res Function(_UsersBlocState) _then) =
+abstract mixin class _$UsersBlocStateCopyWith<$Res> implements $UsersBlocStateCopyWith<$Res> {
+  factory _$UsersBlocStateCopyWith(_UsersBlocState value, $Res Function(_UsersBlocState) _then) =
       __$UsersBlocStateCopyWithImpl;
   @override
   @useResult
-  $Res call(
-      {List<User> users,
-      bool canLoadMore,
-      int page,
-      UsersBlocStatus status,
-      String? error});
+  $Res call({List<User> users, bool canLoadMore, int page, UsersBlocStatus status, String? error});
 }
 
 /// @nodoc
-class __$UsersBlocStateCopyWithImpl<$Res>
-    implements _$UsersBlocStateCopyWith<$Res> {
+class __$UsersBlocStateCopyWithImpl<$Res> implements _$UsersBlocStateCopyWith<$Res> {
   __$UsersBlocStateCopyWithImpl(this._self, this._then);
 
   final _UsersBlocState _self;

@@ -25,8 +25,7 @@ class UsersRepositoryImpl extends UsersRepository {
       final res = await dio.get('?page=$page&results=$limit');
       if (res.statusCode == HttpStatus.ok) {
         final rawUsers = res.data['results'] as List<dynamic>;
-        final users =
-            rawUsers.map((rawUser) => User.fromJson(rawUser)).toList();
+        final users = rawUsers.map((rawUser) => User.fromJson(rawUser)).toList();
 
         return (users, null);
       }
