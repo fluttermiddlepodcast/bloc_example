@@ -24,6 +24,7 @@
 - [Шиммеры / Скелетоны](https://youtu.be/L-Jgfsl1lmM)
 - [make / Makefile для Flutter-проектов](https://youtu.be/CMj70A5k17E)
 - [bloc + пагинация = ❤️](https://youtu.be/0L-LgbR3EgM)
+- [bloc_tools: генерируем блоки из консоли](https://youtu.be/c-CXiQZVYBs)
 
 ## Запуск
 
