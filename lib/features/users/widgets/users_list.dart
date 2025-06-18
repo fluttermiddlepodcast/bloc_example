@@ -35,13 +35,17 @@ class _UsersListState extends State<UsersList> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UsersBloc, UsersBlocState>(
-      buildWhen: (prev, curr) {
-        if (prev is UsersBlocStateLoaded && curr is UsersBlocStateLoaded) {
-          return !const DeepCollectionEquality().equals(prev.users, curr.users);
-        }
-
-        return true;
-      },
+      //
+      // Чтобы убрать ошибку - добавьте `buildWhen` из комментария ниже.
+      // Вообще, можно вставить свою реализацию. Ошибка отсутствия `buildWhen` пропадет после его добавления.
+      //
+      // buildWhen: (prev, curr) {
+      //   if (prev is UsersBlocStateLoaded && curr is UsersBlocStateLoaded) {
+      //     return !const DeepCollectionEquality().equals(prev.users, curr.users);
+      //   }
+      //
+      //   return true;
+      // },
       builder: (context, state) {
         return switch (state) {
           UsersBlocStateLoading _ => const UsersListShimmer(),
