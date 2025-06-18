@@ -38,6 +38,23 @@ jobs:
       - name: Analyze code
         run: flutter analyze ${{ needs.changes.outputs.all_changed_files }}
 
+  custom_lint:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.any_changed == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: kuhnroyal/flutter-fvm-config-action@v2
+        id: fvm-config-action
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
+          channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
+      - name: Get dependencies
+        run: flutter pub get
+      - name: Analyze code
+        run: flutter pub run custom_lint ${{ needs.changes.outputs.all_changed_files }}
+
   formatter:
     runs-on: ubuntu-latest
     needs: changes
