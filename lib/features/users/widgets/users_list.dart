@@ -2,7 +2,6 @@ import 'package:bloc_example/features/users/bloc/users_bloc.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_event.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_state.dart';
 import 'package:bloc_example/features/users/widgets/user_info_row.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,13 +34,17 @@ class _UsersListState extends State<UsersList> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UsersBloc, UsersBlocState>(
-      buildWhen: (prev, curr) {
-        if (prev is UsersBlocStateLoaded && curr is UsersBlocStateLoaded) {
-          return !const DeepCollectionEquality().equals(prev.users, curr.users);
-        }
-
-        return true;
-      },
+      //
+      // Чтобы убрать ошибку - добавьте `buildWhen` из комментария ниже.
+      // Вообще, можно вставить свою реализацию. Ошибка отсутствия `buildWhen` пропадет после его добавления.
+      //
+      // buildWhen: (prev, curr) {
+      //   if (prev is UsersBlocStateLoaded && curr is UsersBlocStateLoaded) {
+      //     return !const DeepCollectionEquality().equals(prev.users, curr.users);
+      //   }
+      //
+      //   return true;
+      // },
       builder: (context, state) {
         return switch (state) {
           UsersBlocStateLoading _ => const UsersListShimmer(),
