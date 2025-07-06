@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 class UserInfoRow extends StatelessWidget {
   final User user;
 
-  const UserInfoRow({super.key, required this.user});
+  const UserInfoRow({
+    super.key,
+    required this.user,
+  });
 
   @override
   Widget build(BuildContext context) {

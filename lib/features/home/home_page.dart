@@ -14,7 +14,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('BLoC Example')),
+      appBar: AppBar(
+        title: const Text(
+          'BLoC Example',
+        ),
+      ),
       body: BlocProvider<UsersBloc>(
         create: (_) => UsersBloc(
           usersRepository: di.get<UsersRepository>(),
