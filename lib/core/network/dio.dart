@@ -8,4 +8,8 @@ import 'package:technical_debt/technical_debt/technical_debt.dart';
   severity: Severity.major,
   deadline: '2025-12-12',
 )
-final dio = Dio(BaseOptions(baseUrl: 'https://randomuser.me/api/'));
+final dio = Dio(
+  BaseOptions(
+    baseUrl: 'https://randomuser.me/api/',
+  ),
+);

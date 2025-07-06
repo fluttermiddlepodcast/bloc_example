@@ -44,20 +44,24 @@ class _UsersListState extends State<UsersList> {
         return switch (state) {
           UsersBlocStateLoading _ => const UsersListShimmer(),
           UsersBlocStateLoaded state => RefreshIndicator(
-            onRefresh: () async => context.read<UsersBloc>().add(UsersBlocEventRefresh()),
-            child: ListView.builder(
-              controller: _scrollController,
-              itemBuilder: (_, index) {
-                if (state.canLoadMore && index == state.users.length) {
-                  return const UserInfoRowShimmer();
-                }
+              onRefresh: () async => context.read<UsersBloc>().add(UsersBlocEventRefresh()),
+              child: ListView.builder(
+                controller: _scrollController,
+                itemBuilder: (_, index) {
+                  if (state.canLoadMore && index == state.users.length) {
+                    return const UserInfoRowShimmer();
+                  }
 
-                return UserInfoRow(user: state.users[index]);
-              },
-              itemCount: state.users.length + (state.canLoadMore ? 1 : 0),
+                  return UserInfoRow(
+                    user: state.users[index],
+                  );
+                },
+                itemCount: state.users.length + (state.canLoadMore ? 1 : 0),
+              ),
             ),
-          ),
-          UsersBlocStateError state => Center(child: Text(state.error)),
+          UsersBlocStateError state => Center(
+              child: Text(state.error),
+            ),
         };
       },
     );

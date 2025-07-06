@@ -16,5 +16,9 @@ final di = GetIt.instance;
 )
 Future<void> initDI() async {
   di.registerSingleton<Dio>(dio);
-  di.registerSingleton<UsersRepository>(UsersRepositoryImpl(di.get<Dio>()));
+  di.registerSingleton<UsersRepository>(
+    UsersRepositoryImpl(
+      di.get<Dio>(),
+    ),
+  );
 }

@@ -10,7 +10,10 @@ class UsersRepositoryImpl extends UsersRepository {
   UsersRepositoryImpl(this.dio);
 
   @override
-  Future<(List<User>?, String?)> fetchUsers({int limit = 30, int page = 0}) async {
+  Future<(List<User>?, String?)> fetchUsers({
+    int limit = 30,
+    int page = 0,
+  }) async {
     try {
       final res = await dio.get('?page=$page&results=$limit');
       if (res.statusCode == HttpStatus.ok) {

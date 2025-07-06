@@ -7,7 +7,10 @@ class Profile {
   final String firstName;
   final String lastName;
 
-  Profile({required this.firstName, required this.lastName});
+  Profile({
+    required this.firstName,
+    required this.lastName,
+  });
 
   factory Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
 

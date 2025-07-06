@@ -27,15 +27,24 @@ class UserInfoRowShimmer extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(width: 16.0),
-          BEShimmer(height: 56.0, width: 56.0),
+          BEShimmer(
+            height: 56.0,
+            width: 56.0,
+          ),
           SizedBox(width: 16.0),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BEShimmer(height: 14.0, width: 172.0),
+              BEShimmer(
+                height: 14.0,
+                width: 172.0,
+              ),
               SizedBox(height: 8.0),
-              BEShimmer(height: 12.0, width: 256.0),
+              BEShimmer(
+                height: 12.0,
+                width: 256.0,
+              ),
             ],
           ),
           SizedBox(width: 16.0),

@@ -12,8 +12,11 @@ import 'package:technical_debt/technical_debt/technical_debt.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory:
-        kIsWeb ? HydratedStorageDirectory.web : HydratedStorageDirectory((await getTemporaryDirectory()).path),
+    storageDirectory: kIsWeb
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory(
+            (await getTemporaryDirectory()).path,
+          ),
   );
 
   await initDI();
@@ -34,8 +37,16 @@ class BLoCExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'BLoC Example',
-      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple), useMaterial3: true),
-      home: BlocProvider<ProfileBloc>(create: (context) => ProfileBloc(), child: const HomePage()),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+        ),
+        useMaterial3: true,
+      ),
+      home: BlocProvider<ProfileBloc>(
+        create: (context) => ProfileBloc(),
+        child: const HomePage(),
+      ),
     );
   }
 }
