@@ -651,9 +651,11 @@ packages:
   technical_debt:
     dependency: "direct main"
     description:
-      path: "../../Desktop/technical_debt"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "5d31b629f38d461cdc0cf17dd36f05829aacf20a"
+      url: "https://github.com/fluttermiddlepodcast/technical_debt"
+    source: git
     version: "1.0.0"
   term_glyph:
     dependency: transitive
