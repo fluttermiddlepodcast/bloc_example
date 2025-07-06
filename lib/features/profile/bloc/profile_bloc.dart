@@ -20,20 +20,26 @@ class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState> {
     }
 
     const timerDuration = Duration(hours: 2);
-    timer = Timer.periodic(timerDuration, (_) {
-      if (state is ProfileBlocStateLoaded) {
-        if ((state as ProfileBlocStateLoaded).isLoggedIn) {
-          add(ProfileBlocEventLogOut());
-        } else {
-          add(ProfileBlocEventLogIn());
+    timer = Timer.periodic(
+      timerDuration,
+      (_) {
+        if (state is ProfileBlocStateLoaded) {
+          if ((state as ProfileBlocStateLoaded).isLoggedIn) {
+            add(ProfileBlocEventLogOut());
+          } else {
+            add(ProfileBlocEventLogIn());
+          }
         }
-      }
-    });
+      },
+    );
   }
 
   Timer? timer;
 
-  Future<void> _onFetch(ProfileBlocEventFetch event, Emitter<ProfileBlocState> emit) async {
+  Future<void> _onFetch(
+    ProfileBlocEventFetch event,
+    Emitter<ProfileBlocState> emit,
+  ) async {
     if (const bool.fromEnvironment('ERROR_WHILE_PROFILE_FETCH')) {
       emit(
         ProfileBlocStateError(

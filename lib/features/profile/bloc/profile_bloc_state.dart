@@ -17,5 +17,7 @@ class ProfileBlocStateLoaded extends ProfileBlocState {
 class ProfileBlocStateError extends ProfileBlocState {
   final String error;
 
-  ProfileBlocStateError({required this.error});
+  ProfileBlocStateError({
+    required this.error,
+  });
 }

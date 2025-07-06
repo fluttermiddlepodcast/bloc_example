@@ -40,7 +40,11 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
         ),
       );
     } else {
-      emit(UsersBlocStateError(usersRes.$2!));
+      emit(
+        UsersBlocStateError(
+          usersRes.$2!,
+        ),
+      );
     }
   }
 
@@ -69,13 +73,20 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
 
       emit(
         UsersBlocStateLoaded(
-          users: [...currState.users, ...users],
+          users: [
+            ...currState.users,
+            ...users,
+          ],
           canLoadMore: users.length == 30,
           page: page + 1,
         ),
       );
     } else {
-      emit(UsersBlocStateError(usersRes.$2!));
+      emit(
+        UsersBlocStateError(
+          usersRes.$2!,
+        ),
+      );
     }
   }
 
