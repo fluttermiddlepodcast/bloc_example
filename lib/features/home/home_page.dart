@@ -14,15 +14,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'BLoC Example',
-        ),
-      ),
+      appBar: AppBar(title: const Text('BLoC Example')),
       body: BlocProvider<UsersBloc>(
-        create: (_) => UsersBloc(
-          usersRepository: di.get<UsersRepository>(),
-        ),
+        create: (_) => UsersBloc(usersRepository: di.get<UsersRepository>()),
         child: BlocListener<ProfileBloc, ProfileBlocState>(
           listener: (context, state) {
             context.read<UsersBloc>().add(UsersBlocEventRefresh());

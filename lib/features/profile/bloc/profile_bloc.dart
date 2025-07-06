@@ -12,79 +12,43 @@ class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState> {
     on<ProfileBlocEventLogOut>(_onLogOut);
 
     if (state is ProfileBlocStateLoading) {
-      add(
-        ProfileBlocEventFetch(
-          isLogIn: true,
-        ),
-      );
+      add(ProfileBlocEventFetch(isLogIn: true));
     }
 
-    const timerDuration = Duration(
-      hours: 2,
-    );
-    timer = Timer.periodic(
-      timerDuration,
-      (_) {
-        if (state is ProfileBlocStateLoaded) {
-          if ((state as ProfileBlocStateLoaded).isLoggedIn) {
-            add(ProfileBlocEventLogOut());
-          } else {
-            add(ProfileBlocEventLogIn());
-          }
+    const timerDuration = Duration(hours: 2);
+    timer = Timer.periodic(timerDuration, (_) {
+      if (state is ProfileBlocStateLoaded) {
+        if ((state as ProfileBlocStateLoaded).isLoggedIn) {
+          add(ProfileBlocEventLogOut());
+        } else {
+          add(ProfileBlocEventLogIn());
         }
-      },
-    );
+      }
+    });
   }
 
   Timer? timer;
 
-  Future<void> _onFetch(
-    ProfileBlocEventFetch event,
-    Emitter<ProfileBlocState> emit,
-  ) async {
+  Future<void> _onFetch(ProfileBlocEventFetch event, Emitter<ProfileBlocState> emit) async {
     if (const bool.fromEnvironment('ERROR_WHILE_PROFILE_FETCH')) {
-      emit(
-        ProfileBlocStateError(
-          error: 'Something went wrong. Try again later',
-        ),
-      );
+      emit(ProfileBlocStateError(error: 'Something went wrong. Try again later'));
     } else {
       emit(
-        ProfileBlocStateLoaded(
-          isLoggedIn: event.isLogIn,
-          profile: Profile(
-            firstName: 'Carlo',
-            lastName: 'Rivetti',
-          ),
-        ),
+        ProfileBlocStateLoaded(isLoggedIn: event.isLogIn, profile: Profile(firstName: 'Carlo', lastName: 'Rivetti')),
       );
     }
   }
 
-  Future<void> _onLogIn(
-    ProfileBlocEventLogIn event,
-    Emitter<ProfileBlocState> emit,
-  ) async {
+  Future<void> _onLogIn(ProfileBlocEventLogIn event, Emitter<ProfileBlocState> emit) async {
     emit(ProfileBlocStateLoading());
 
-    add(
-      ProfileBlocEventFetch(
-        isLogIn: true,
-      ),
-    );
+    add(ProfileBlocEventFetch(isLogIn: true));
   }
 
-  Future<void> _onLogOut(
-    ProfileBlocEventLogOut event,
-    Emitter<ProfileBlocState> emit,
-  ) async {
+  Future<void> _onLogOut(ProfileBlocEventLogOut event, Emitter<ProfileBlocState> emit) async {
     emit(ProfileBlocStateLoading());
 
-    add(
-      ProfileBlocEventFetch(
-        isLogIn: false,
-      ),
-    );
+    add(ProfileBlocEventFetch(isLogIn: false));
   }
 
   @override
@@ -97,10 +61,7 @@ class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState> {
   @override
   ProfileBlocState? fromJson(Map<String, dynamic> json) {
     if (json.containsKey('profile')) {
-      return ProfileBlocStateLoaded(
-        profile: Profile.fromJson(json['profile']),
-        isLoggedIn: json['isLoggedIn'] ?? true,
-      );
+      return ProfileBlocStateLoaded(profile: Profile.fromJson(json['profile']), isLoggedIn: json['isLoggedIn'] ?? true);
     }
 
     return null;
@@ -109,10 +70,7 @@ class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState> {
   @override
   Map<String, dynamic>? toJson(ProfileBlocState state) {
     if (state is ProfileBlocStateLoaded) {
-      return {
-        'profile': state.profile.toJson(),
-        'isLoggedIn': state.isLoggedIn,
-      };
+      return {'profile': state.profile.toJson(), 'isLoggedIn': state.isLoggedIn};
     }
 
     return null;

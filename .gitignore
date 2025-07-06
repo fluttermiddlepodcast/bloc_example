@@ -52,3 +52,6 @@ app.*.map.json
 .fvm/flutter_sdk
 
 coverage
+
+*.technical_debt.json
+technical_debt_report.html

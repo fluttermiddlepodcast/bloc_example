@@ -6,15 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:technical_debt/technical_debt/severity.dart';
+import 'package:technical_debt/technical_debt/technical_debt.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: kIsWeb
-        ? HydratedStorageDirectory.web
-        : HydratedStorageDirectory(
-            (await getTemporaryDirectory()).path,
-          ),
+    storageDirectory:
+        kIsWeb ? HydratedStorageDirectory.web : HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
 
   await initDI();
@@ -22,6 +21,12 @@ Future<void> main() async {
   runApp(const BLoCExampleApp());
 }
 
+@TechnicalDebt(
+  author: 'fluttermiddlepodcast',
+  description: 'Move theme to UI-Kit',
+  severity: Severity.minor,
+  deadline: '2025-12-12',
+)
 class BLoCExampleApp extends StatelessWidget {
   const BLoCExampleApp({super.key});
 
@@ -29,16 +34,8 @@ class BLoCExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'BLoC Example',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-        ),
-        useMaterial3: true,
-      ),
-      home: BlocProvider<ProfileBloc>(
-        create: (context) => ProfileBloc(),
-        child: const HomePage(),
-      ),
+      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple), useMaterial3: true),
+      home: BlocProvider<ProfileBloc>(create: (context) => ProfileBloc(), child: const HomePage()),
     );
   }
 }

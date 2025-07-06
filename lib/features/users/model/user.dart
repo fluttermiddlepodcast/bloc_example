@@ -8,11 +8,7 @@ class User {
   final String email;
   final Picture picture;
 
-  User({
-    required this.name,
-    required this.email,
-    required this.picture,
-  });
+  User({required this.name, required this.email, required this.picture});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
@@ -39,11 +35,7 @@ class Name {
 
   String get fullName => '$title $first $last';
 
-  Name({
-    required this.title,
-    required this.first,
-    required this.last,
-  });
+  Name({required this.title, required this.first, required this.last});
 
   factory Name.fromJson(Map<String, dynamic> json) => _$NameFromJson(json);
 
@@ -68,11 +60,7 @@ class Picture {
   final String medium;
   final String thumbnail;
 
-  Picture({
-    required this.large,
-    required this.medium,
-    required this.thumbnail,
-  });
+  Picture({required this.large, required this.medium, required this.thumbnail});
 
   factory Picture.fromJson(Map<String, dynamic> json) => _$PictureFromJson(json);
 

@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.6 <4.0.0'
+  sdk: '>=3.0.6 <3.7.0'
 
 dependencies:
   dio: ^5.4.0
@@ -21,13 +21,17 @@ dependencies:
 
   collection:
 
+  technical_debt:
+    git:
+      url: https://github.com/fluttermiddlepodcast/technical_debt
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^5.0.0
   build_runner: ^2.4.15
-  json_serializable: ^6.7.1
+  json_serializable: ^6.9.5
 
 flutter:
   uses-material-design: true

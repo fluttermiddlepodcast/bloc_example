@@ -9,11 +9,7 @@ class UsersBlocStateLoaded extends UsersBlocState {
   final bool canLoadMore;
   final int page;
 
-  UsersBlocStateLoaded({
-    required this.users,
-    required this.canLoadMore,
-    required this.page,
-  });
+  UsersBlocStateLoaded({required this.users, required this.canLoadMore, required this.page});
 }
 
 class UsersBlocStateError extends UsersBlocState {

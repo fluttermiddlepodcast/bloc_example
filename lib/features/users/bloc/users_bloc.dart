@@ -10,10 +10,7 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
 
   UsersBloc({required this.usersRepository}) : super(UsersBlocStateLoading()) {
     on<UsersBlocEventFetch>(_onFetch);
-    on<UsersBlocEventFetchMore>(
-      _onFetchMore,
-      transformer: droppable(),
-    );
+    on<UsersBlocEventFetchMore>(_onFetchMore, transformer: droppable());
     on<UsersBlocEventRefresh>(_onRefresh);
 
     if (state is UsersBlocStateLoading) {
@@ -21,33 +18,18 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
     }
   }
 
-  Future<void> _onFetch(
-    UsersBlocEventFetch event,
-    Emitter<UsersBlocState> emit,
-  ) async {
-    final usersRes = await usersRepository.fetchUsers(
-      limit: 30,
-      page: 0,
-    );
+  Future<void> _onFetch(UsersBlocEventFetch event, Emitter<UsersBlocState> emit) async {
+    final usersRes = await usersRepository.fetchUsers(limit: 30, page: 0);
     if (usersRes.$2 == null) {
       final users = usersRes.$1!;
 
-      emit(
-        UsersBlocStateLoaded(
-          users: users,
-          canLoadMore: users.length == 30,
-          page: 1,
-        ),
-      );
+      emit(UsersBlocStateLoaded(users: users, canLoadMore: users.length == 30, page: 1));
     } else {
       emit(UsersBlocStateError(usersRes.$2!));
     }
   }
 
-  Future<void> _onFetchMore(
-    UsersBlocEventFetchMore event,
-    Emitter<UsersBlocState> emit,
-  ) async {
+  Future<void> _onFetchMore(UsersBlocEventFetchMore event, Emitter<UsersBlocState> emit) async {
     if (state is! UsersBlocStateLoaded) {
       return;
     }
@@ -60,32 +42,19 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
 
     final page = currState.page;
 
-    final usersRes = await usersRepository.fetchUsers(
-      limit: 30,
-      page: page,
-    );
+    final usersRes = await usersRepository.fetchUsers(limit: 30, page: page);
     if (usersRes.$2 == null) {
       final users = usersRes.$1!;
 
       emit(
-        UsersBlocStateLoaded(
-          users: [
-            ...currState.users,
-            ...users,
-          ],
-          canLoadMore: users.length == 30,
-          page: page + 1,
-        ),
+        UsersBlocStateLoaded(users: [...currState.users, ...users], canLoadMore: users.length == 30, page: page + 1),
       );
     } else {
       emit(UsersBlocStateError(usersRes.$2!));
     }
   }
 
-  Future<void> _onRefresh(
-    UsersBlocEventRefresh event,
-    Emitter<UsersBlocState> emit,
-  ) async {
+  Future<void> _onRefresh(UsersBlocEventRefresh event, Emitter<UsersBlocState> emit) async {
     emit(UsersBlocStateLoading());
 
     add(UsersBlocEventFetch());
@@ -95,11 +64,7 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
   UsersBlocState? fromJson(Map<String, dynamic> json) {
     if (json.containsKey('users')) {
       return UsersBlocStateLoaded(
-        users: (json['users'] as List)
-            .map(
-              (json) => User.fromJson(json),
-            )
-            .toList(),
+        users: (json['users'] as List).map((json) => User.fromJson(json)).toList(),
         canLoadMore: json['canLoadMore'] ?? true,
         page: json['page'] ?? 0,
       );

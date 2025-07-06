@@ -20,16 +20,14 @@ class _UsersListState extends State<UsersList> {
   void initState() {
     super.initState();
 
-    _scrollController.addListener(
-      () {
-        double maxScroll = _scrollController.position.maxScrollExtent;
-        double currentScroll = _scrollController.position.pixels;
+    _scrollController.addListener(() {
+      double maxScroll = _scrollController.position.maxScrollExtent;
+      double currentScroll = _scrollController.position.pixels;
 
-        if (maxScroll - currentScroll <= 300) {
-          context.read<UsersBloc>().add(UsersBlocEventFetchMore());
-        }
-      },
-    );
+      if (maxScroll - currentScroll <= 300) {
+        context.read<UsersBloc>().add(UsersBlocEventFetchMore());
+      }
+    });
   }
 
   @override
@@ -46,28 +44,20 @@ class _UsersListState extends State<UsersList> {
         return switch (state) {
           UsersBlocStateLoading _ => const UsersListShimmer(),
           UsersBlocStateLoaded state => RefreshIndicator(
-              onRefresh: () async => context.read<UsersBloc>().add(
-                    UsersBlocEventRefresh(),
-                  ),
-              child: ListView.builder(
-                controller: _scrollController,
-                itemBuilder: (_, index) {
-                  if (state.canLoadMore && index == state.users.length) {
-                    return const UserInfoRowShimmer();
-                  }
+            onRefresh: () async => context.read<UsersBloc>().add(UsersBlocEventRefresh()),
+            child: ListView.builder(
+              controller: _scrollController,
+              itemBuilder: (_, index) {
+                if (state.canLoadMore && index == state.users.length) {
+                  return const UserInfoRowShimmer();
+                }
 
-                  return UserInfoRow(
-                    user: state.users[index],
-                  );
-                },
-                itemCount: state.users.length + (state.canLoadMore ? 1 : 0),
-              ),
+                return UserInfoRow(user: state.users[index]);
+              },
+              itemCount: state.users.length + (state.canLoadMore ? 1 : 0),
             ),
-          UsersBlocStateError state => Center(
-              child: Text(
-                state.error,
-              ),
-            ),
+          ),
+          UsersBlocStateError state => Center(child: Text(state.error)),
         };
       },
     );
@@ -88,10 +78,7 @@ class UsersListShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
-      children: List.generate(
-        12,
-        (_) => const UserInfoRowShimmer(),
-      ),
+      children: List.generate(12, (_) => const UserInfoRowShimmer()),
     );
   }
 }

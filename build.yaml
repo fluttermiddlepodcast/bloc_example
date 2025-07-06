@@ -1,0 +1,27 @@
+targets:
+  $default:
+    builders:
+      technical_debt|technical_debt_collector:
+        enabled: true
+        generate_for:
+          - lib/**
+      technical_debt|technical_debt_reporter:
+        enabled: true
+        generate_for:
+          - "**/*.technical_debt.json"
+
+builders:
+  technical_debt_collector:
+    import: "package:technical_debt/builder_collector.dart"
+    auto_apply: root_package
+    builder_factories: ["technicalDebtCollector"]
+    build_extensions: {".dart": [".technical_debt.json"]}
+    build_to: source
+
+  technical_debt_reporter:
+    import: "package:technical_debt/builder_reporter.dart"
+    auto_apply: root_package
+    builder_factories: ["technicalDebtReporter"]
+    build_extensions: {".technical_debt.json": ["technical_debt_report.html"]}
+    build_to: source
+    required_inputs: [".technical_debt.json"]
