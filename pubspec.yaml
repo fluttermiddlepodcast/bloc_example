@@ -7,15 +7,18 @@ environment:
   sdk: '>=3.0.6 <4.0.0'
 
 dependencies:
-  dio: ^5.4.0
   flutter:
     sdk: flutter
 
-  flutter_bloc: ^9.0.0
-  bloc_concurrency: ^0.3.0
-  hydrated_bloc: ^10.0.0
+  yx_state: ^1.0.0
+  yx_state_flutter: ^1.0.0
+
+  yx_scope: ^1.0.0
+  yx_scope_flutter: ^1.0.0
+
+  dio: ^5.4.0
   path_provider: ^2.1.5
-  get_it: ^8.0.3
+  freezed_annotation:
   json_annotation: ^4.8.1
   shimmer: ^3.0.0
 
@@ -27,6 +30,7 @@ dev_dependencies:
 
   flutter_lints: ^5.0.0
   build_runner: ^2.4.15
+  freezed:
   json_serializable: ^6.7.1
 
 flutter:

@@ -1,43 +1,51 @@
-import 'package:bloc_example/core/di/di.dart';
+import 'package:bloc_example/core/di/app_scope.dart';
 import 'package:bloc_example/features/home/home_page.dart';
-import 'package:bloc_example/features/profile/bloc/profile_bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:yx_scope_flutter/yx_scope_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: kIsWeb
-        ? HydratedStorageDirectory.web
-        : HydratedStorageDirectory(
-            (await getTemporaryDirectory()).path,
-          ),
-  );
-
-  await initDI();
 
   runApp(const BLoCExampleApp());
 }
 
-class BLoCExampleApp extends StatelessWidget {
+class BLoCExampleApp extends StatefulWidget {
   const BLoCExampleApp({super.key});
 
   @override
+  State<BLoCExampleApp> createState() => _BLoCExampleAppState();
+}
+
+class _BLoCExampleAppState extends State<BLoCExampleApp> {
+  final _appScopeHolder = AppScopeHolder();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _appScopeHolder.create();
+  }
+
+  @override
+  void dispose() {
+    _appScopeHolder.drop();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'BLoC Example',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
+    return ScopeProvider(
+      holder: _appScopeHolder,
+      child: MaterialApp(
+        title: 'BLoC Example',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+          ),
+          useMaterial3: true,
         ),
-        useMaterial3: true,
-      ),
-      home: BlocProvider<ProfileBloc>(
-        create: (context) => ProfileBloc(),
-        child: const HomePage(),
+        home: const HomePage(),
       ),
     );
   }
