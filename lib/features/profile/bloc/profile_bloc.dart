@@ -6,6 +6,8 @@ import 'package:bloc_example/features/profile/model/profile.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState> {
+// class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState>
+//     with BlocPresentationMixin<ProfileBlocState, ProfileBlocEvent> {
   ProfileBloc() : super(ProfileBlocStateLoading()) {
     on<ProfileBlocEventFetch>(_onFetch);
     on<ProfileBlocEventLogIn>(_onLogIn);
@@ -20,7 +22,7 @@ class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState> {
     }
 
     const timerDuration = Duration(
-      hours: 2,
+      seconds: 5,
     );
     timer = Timer.periodic(
       timerDuration,
@@ -28,8 +30,12 @@ class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState> {
         if (state is ProfileBlocStateLoaded) {
           if ((state as ProfileBlocStateLoaded).isLoggedIn) {
             add(ProfileBlocEventLogOut());
+
+            // emitPresentation(ProfileBlocEventLogOut());
           } else {
             add(ProfileBlocEventLogIn());
+
+            // emitPresentation(ProfileBlocEventLogIn());
           }
         }
       },

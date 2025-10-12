@@ -23,9 +23,40 @@ class HomePage extends StatelessWidget {
         create: (_) => UsersBloc(
           usersRepository: di.get<UsersRepository>(),
         ),
+        // child: BlocPresentationListener<ProfileBloc, ProfileBlocEvent>(
+        //   listener: (context, event) {
+        //     if (event is! ProfileBlocEventFetch) {
+        //       context.read<UsersBloc>().add(UsersBlocEventRefresh());
+
+        //       final isLoggedIn = event is ProfileBlocEventLogIn;
+
+        //       ScaffoldMessenger.of(context).showSnackBar(
+        //         SnackBar(
+        //           content: Text(
+        //             isLoggedIn ? 'You are logged in' : 'You are logged out',
+        //           ),
+        //         ),
+        //       );
+        //     }
+        //   },
+        //   child: const UsersList(),
+        // ),
         child: BlocListener<ProfileBloc, ProfileBlocState>(
+          listenWhen: (prev, curr) {
+            return prev is ProfileBlocStateLoading && curr is ProfileBlocStateLoaded;
+          },
           listener: (context, state) {
             context.read<UsersBloc>().add(UsersBlocEventRefresh());
+
+            final isLoggedIn = (state as ProfileBlocStateLoaded).isLoggedIn;
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  isLoggedIn ? 'You are logged in' : 'You are logged out',
+                ),
+              ),
+            );
           },
           child: const UsersList(),
         ),
