@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.6 <4.0.0'
+  sdk: '>=3.9.0'
 
 dependencies:
   dio: ^5.4.0
@@ -28,6 +28,9 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   build_runner: ^2.4.15
   json_serializable: ^6.7.1
+
+  bloc_rules_plugin:
+    path: ./bloc_rules_plugin
 
 flutter:
   uses-material-design: true
