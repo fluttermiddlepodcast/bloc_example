@@ -1,10 +1,11 @@
-import 'package:bloc_example/features/users/bloc/users_bloc.dart';
-import 'package:bloc_example/features/users/bloc/users_bloc_event.dart';
-import 'package:bloc_example/features/users/bloc/users_bloc_state.dart';
+import 'package:bloc_example/core/di/app_scope.dart';
+import 'package:bloc_example/features/users/bloc/users_state_manager.dart';
+import 'package:bloc_example/features/users/bloc/users_state.dart';
 import 'package:bloc_example/features/users/widgets/user_info_row.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:yx_scope_flutter/yx_scope_flutter.dart';
+import 'package:yx_state_flutter/yx_state_flutter.dart';
 
 class UsersList extends StatefulWidget {
   const UsersList({super.key});
@@ -15,6 +16,7 @@ class UsersList extends StatefulWidget {
 
 class _UsersListState extends State<UsersList> {
   final _scrollController = ScrollController();
+  late UsersStateManager _usersStateManager;
 
   @override
   void initState() {
@@ -26,49 +28,55 @@ class _UsersListState extends State<UsersList> {
         double currentScroll = _scrollController.position.pixels;
 
         if (maxScroll - currentScroll <= 300) {
-          context.read<UsersBloc>().add(UsersBlocEventFetchMore());
+          _usersStateManager.loadMoreUsers();
         }
       },
     );
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _usersStateManager = ScopeProvider.of<AppScopeContainer>(context)!.usersStateManager.get;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UsersBloc, UsersBlocState>(
+    return StateBuilder<UsersState>(
+      stateReadable: _usersStateManager,
       buildWhen: (prev, curr) {
-        if (prev is UsersBlocStateLoaded && curr is UsersBlocStateLoaded) {
-          return !const DeepCollectionEquality().equals(prev.users, curr.users);
+        return !const DeepCollectionEquality().equals(prev.users, curr.users);
+      },
+      builder: (_, state, __) {
+        if (state.isLoading) {
+          return const UsersListShimmer();
         }
 
-        return true;
-      },
-      builder: (context, state) {
-        return switch (state) {
-          UsersBlocStateLoading _ => const UsersListShimmer(),
-          UsersBlocStateLoaded state => RefreshIndicator(
-              onRefresh: () async => context.read<UsersBloc>().add(
-                    UsersBlocEventRefresh(),
-                  ),
-              child: ListView.builder(
-                controller: _scrollController,
-                itemBuilder: (_, index) {
-                  if (state.canLoadMore && index == state.users.length) {
-                    return const UserInfoRowShimmer();
-                  }
+        if (state.error != null) {
+          return Center(
+            child: Text(
+              state.error!,
+            ),
+          );
+        }
 
-                  return UserInfoRow(
-                    user: state.users[index],
-                  );
-                },
-                itemCount: state.users.length + (state.canLoadMore ? 1 : 0),
-              ),
-            ),
-          UsersBlocStateError state => Center(
-              child: Text(
-                state.error,
-              ),
-            ),
-        };
+        return RefreshIndicator(
+          onRefresh: () => _usersStateManager.refreshUsers(),
+          child: ListView.builder(
+            controller: _scrollController,
+            itemBuilder: (_, index) {
+              if (state.canLoadMore && index == state.users.length) {
+                return const UserInfoRowShimmer();
+              }
+
+              return UserInfoRow(
+                user: state.users[index],
+              );
+            },
+            itemCount: state.users.length + (state.canLoadMore ? 1 : 0),
+          ),
+        );
       },
     );
   }
