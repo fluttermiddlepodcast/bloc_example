@@ -16,7 +16,7 @@ void main() {
         build: () => ProfileBloc(),
         setUp: () => setupHydratedStorageMock(),
         expect: () => [
-          _loggedInProfileBlocState(),
+          _defaultProfileBlocState,
         ],
       );
 
@@ -33,7 +33,7 @@ void main() {
           ),
         skip: 2,
         expect: () => [
-          _loggedInProfileBlocState(),
+          _defaultProfileBlocState,
         ],
       );
 
@@ -43,9 +43,9 @@ void main() {
         setUp: () => setupHydratedStorageMock(),
         act: (bloc) => bloc.add(ProfileBlocEventLogIn()),
         expect: () => [
-          _loggedInProfileBlocState(),
+          _defaultProfileBlocState,
           ProfileBlocStateLoading(),
-          _loggedInProfileBlocState(),
+          _defaultProfileBlocState,
         ],
       );
 
@@ -55,11 +55,11 @@ void main() {
         setUp: () => setupHydratedStorageMock(),
         act: (bloc) => bloc.add(ProfileBlocEventLogOut()),
         expect: () => [
-          _loggedInProfileBlocState(),
+          _defaultProfileBlocState,
           ProfileBlocStateLoading(),
           ProfileBlocStateLoaded(
             isLoggedIn: false,
-            profile: _testProfile(),
+            profile: _testProfile,
           ),
         ],
       );
@@ -67,16 +67,12 @@ void main() {
   );
 }
 
-ProfileBlocStateLoaded _loggedInProfileBlocState() {
-  return ProfileBlocStateLoaded(
-    isLoggedIn: true,
-    profile: _testProfile(),
-  );
-}
+final _defaultProfileBlocState = ProfileBlocStateLoaded(
+  isLoggedIn: true,
+  profile: _testProfile,
+);
 
-Profile _testProfile() {
-  return Profile(
-    firstName: 'Carlo',
-    lastName: 'Rivetti',
-  );
-}
+final _testProfile = Profile(
+  firstName: 'Carlo',
+  lastName: 'Rivetti',
+);
