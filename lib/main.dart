@@ -30,7 +30,7 @@ class BLoCExampleApp extends StatelessWidget {
     return MaterialApp(
       title: 'BLoC Example',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
+        colorScheme: .fromSeed(
           seedColor: Colors.deepPurple,
         ),
         useMaterial3: true,
