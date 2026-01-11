@@ -19,11 +19,8 @@ class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState> {
       );
     }
 
-    const timerDuration = Duration(
-      hours: 2,
-    );
     timer = Timer.periodic(
-      timerDuration,
+      const Duration(hours: 2),
       (_) {
         if (state is ProfileBlocStateLoaded) {
           if ((state as ProfileBlocStateLoaded).isLoggedIn) {
