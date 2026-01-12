@@ -49,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.0"
+  bloc_presentation:
+    dependency: "direct main"
+    description:
+      name: bloc_presentation
+      sha256: ccc309371d49b2618692cf75664b87dd135fc439b5d0b0faaa7515117de1d493
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
   bloc_test:
     dependency: "direct dev"
     description:
