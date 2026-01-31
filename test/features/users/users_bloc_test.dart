@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bloc_example/features/users/bloc/users_bloc.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_event.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_state.dart';
@@ -27,7 +29,7 @@ class FakeUsersRepository extends Fake implements UsersRepository {
 
     final pageUsers = _allUsers.sublist(
       start,
-      end.clamp(0, _allUsers.length),
+      min(end, _allUsers.length),
     );
 
     return (pageUsers, null);
