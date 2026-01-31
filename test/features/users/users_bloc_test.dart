@@ -9,7 +9,31 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../mocks/hydrated_storage_mock.dart';
 
-class MockUsersRepository extends Mock implements UsersRepository {}
+class FakeUsersRepository extends Fake implements UsersRepository {
+  final List<User> _allUsers;
+
+  FakeUsersRepository(this._allUsers);
+
+  @override
+  Future<(List<User>?, String?)> fetchUsers({
+    int limit = 30,
+    int page = 0,
+  }) async {
+    final start = page * limit;
+    final end = start + limit;
+
+    if (start >= _allUsers.length) {
+      return (<User>[], null);
+    }
+
+    final pageUsers = _allUsers.sublist(
+      start,
+      end.clamp(0, _allUsers.length),
+    );
+
+    return (pageUsers, null);
+  }
+}
 
 void main() {
   group(
@@ -19,48 +43,11 @@ void main() {
 
       setUp(
         () {
-          usersRepository = MockUsersRepository();
-
-          when(
-            () => usersRepository.fetchUsers(
-              limit: 30,
-              page: 0,
-            ),
-          ).thenAnswer(
-            (_) => Future.value(
-              (
-                _testUsers,
-                null,
-              ),
-            ),
-          );
-
-          when(
-            () => usersRepository.fetchUsers(
-              limit: 30,
-              page: 1,
-            ),
-          ).thenAnswer(
-            (_) => Future.value(
-              (
-                _testUsers,
-                null,
-              ),
-            ),
-          );
-
-          when(
-            () => usersRepository.fetchUsers(
-              limit: 30,
-              page: 2,
-            ),
-          ).thenAnswer(
-            (_) => Future.value(
-              (
-                <User>[],
-                null,
-              ),
-            ),
+          usersRepository = FakeUsersRepository(
+            [
+              ..._testUsers,
+              ..._testUsers,
+            ],
           );
         },
       );
