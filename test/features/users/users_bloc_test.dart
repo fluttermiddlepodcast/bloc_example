@@ -5,7 +5,6 @@ import 'package:bloc_example/features/users/model/user.dart';
 import 'package:bloc_example/features/users/repository/users_repository.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 
 import '../../mocks/hydrated_storage_mock.dart';
 
