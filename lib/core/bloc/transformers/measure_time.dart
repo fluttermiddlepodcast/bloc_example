@@ -1,7 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 /// Example:
 ///
@@ -24,19 +23,12 @@ EventTransformer<E> measureTime<E>({
 
         debugPrint('$blocPrefix ⏱️ Event STARTED: $eventName');
 
-        final controller = StreamController<E>();
-
-        mapper(event).listen(
-          controller.add,
-          onError: controller.addError,
-          onDone: () {
+        return mapper(event).doOnDone(
+          () {
             stopwatch.stop();
             debugPrint('$blocPrefix ⏱️ $eventName: ${stopwatch.elapsedMilliseconds} ms');
-            controller.close();
           },
         );
-
-        return controller.stream;
       },
     );
   };
