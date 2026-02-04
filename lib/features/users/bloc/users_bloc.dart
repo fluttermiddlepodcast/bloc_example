@@ -1,4 +1,5 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:bloc_example/core/bloc/transformers/measure_time.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_event.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_state.dart';
 import 'package:bloc_example/features/users/model/user.dart';
@@ -9,7 +10,12 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
   final UsersRepository usersRepository;
 
   UsersBloc({required this.usersRepository}) : super(UsersBlocStateLoading()) {
-    on<UsersBlocEventFetch>(_onFetch);
+    on<UsersBlocEventFetch>(
+      _onFetch,
+      transformer: measureTime(
+        blocName: 'UsersBloc',
+      ),
+    );
     on<UsersBlocEventFetchMore>(
       _onFetchMore,
       transformer: droppable(),
