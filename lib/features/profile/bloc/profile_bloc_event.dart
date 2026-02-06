@@ -6,6 +6,11 @@ class ProfileBlocEventFetch extends ProfileBlocEvent {
   ProfileBlocEventFetch({
     required this.isLogIn,
   });
+
+  @override
+  String toString() {
+    return 'ProfileBlocEventFetch{isLogIn: $isLogIn}';
+  }
 }
 
 class ProfileBlocEventLogIn extends ProfileBlocEvent {}
