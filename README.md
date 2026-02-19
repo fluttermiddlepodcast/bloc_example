@@ -29,13 +29,18 @@
 - [bloc + пагинация = ❤️](https://t.me/fluttermiddlepodcast/421)
 - [hydrated_bloc: сохраняем состояние блоков](https://t.me/fluttermiddlepodcast/426)
 - [replay_bloc: откатываем состояния блоков и кубитов](https://t.me/fluttermiddlepodcast/427)
+- [BlocObserver](https://t.me/fluttermiddlepodcast/474)
 
 ### Тулинг
 
 - [Flutter Developer Learn #7 - Генерация шаблонного кода / mason](https://t.me/fluttermiddlepodcast/297)
 - [bloc_tools: генерируем блоки из консоли](https://t.me/fluttermiddlepodcast/423)
 - [bloc_lint](https://t.me/fluttermiddlepodcast/461)
+
+### Тесты
+
 - [bloc_test](https://t.me/fluttermiddlepodcast/463)
+- [Тестирование с моками и фейками](https://t.me/fluttermiddlepodcast/470)
 
 ### Полезное
 
