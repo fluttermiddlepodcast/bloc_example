@@ -205,19 +205,20 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
   //     page: page,
   //   );
 
-  //   switch (usersRes) {
-  //     case Ok<List<User>>(:final value):
+  //   usersRes.fold(
+  //     onOk: (users) {
   //       emit(
   //         UsersBlocStateLoaded(
   //           users: [
   //             ...currState.users,
-  //             ...value,
+  //             ...users,
   //           ],
-  //           canLoadMore: value.length == 30,
+  //           canLoadMore: users.length == 30,
   //           page: page + 1,
   //         ),
   //       );
-  //     case Err<List<User>>(:final failure):
+  //     },
+  //     onErr: (failure) {
   //       switch (failure) {
   //         case SomeFailure(:final error):
   //           emit(
@@ -226,7 +227,8 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
   //             ),
   //           );
   //       }
-  //   }
+  //     },
+  //   );
   // }
 
   Future<void> _onRefresh(
