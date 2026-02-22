@@ -65,7 +65,11 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
   //   );
 
   //   usersRes.fold(
-  //     (error) => emit(UsersBlocStateError(error)),
+  //     (error) => emit(
+  //       UsersBlocStateError(
+  //         error.toString(),
+  //       ),
+  //     ),
   //     (users) {
   //       emit(
   //         UsersBlocStateLoaded(
@@ -167,7 +171,11 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
   //   );
 
   //   usersRes.fold(
-  //     (error) => emit(UsersBlocStateError(error)),
+  //     (error) => emit(
+  //       UsersBlocStateError(
+  //         error.toString(),
+  //       ),
+  //     ),
   //     (users) {
   //       emit(
   //         UsersBlocStateLoaded(

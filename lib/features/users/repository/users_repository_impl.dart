@@ -8,37 +8,37 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 // --- RECORDS ---
-class UsersRepositoryImpl extends UsersRepository {
-  final Dio dio;
+// class UsersRepositoryImpl extends UsersRepository {
+//   final Dio dio;
 
-  UsersRepositoryImpl(this.dio);
+//   UsersRepositoryImpl(this.dio);
 
-  @override
-  Future<(List<User>?, String?)> fetchUsers({
-    int limit = 30,
-    int page = 0,
-  }) async {
-    try {
-      final res = await dio.get('?page=$page&results=$limit');
-      if (res.statusCode == HttpStatus.ok) {
-        final rawUsers = res.data['results'] as List<dynamic>;
-        final users = rawUsers.map((rawUser) => User.fromJson(rawUser)).toList();
+//   @override
+//   Future<(List<User>?, String?)> fetchUsers({
+//     int limit = 30,
+//     int page = 0,
+//   }) async {
+//     try {
+//       final res = await dio.get('?page=$page&results=$limit');
+//       if (res.statusCode == HttpStatus.ok) {
+//         final rawUsers = res.data['results'] as List<dynamic>;
+//         final users = rawUsers.map((rawUser) => User.fromJson(rawUser)).toList();
 
-        return (users, null);
-      }
+//         return (users, null);
+//       }
 
-      return (
-        null,
-        '''Network error:
-             - status code: ${res.statusCode}
-             - data: ${res.data}
-          ''',
-      );
-    } catch (e) {
-      return (null, 'Network error: $e');
-    }
-  }
-}
+//       return (
+//         null,
+//         '''Network error:
+//              - status code: ${res.statusCode}
+//              - data: ${res.data}
+//           ''',
+//       );
+//     } catch (e) {
+//       return (null, 'Network error: $e');
+//     }
+//   }
+// }
 
 // --- EITHER (dartz) ---
 // class UsersRepositoryImpl extends UsersRepository {
@@ -47,7 +47,7 @@ class UsersRepositoryImpl extends UsersRepository {
 //   UsersRepositoryImpl(this.dio);
 
 //   @override
-//   Future<Either<String, List<User>>> fetchUsers({
+//   Future<Either<Failure, List<User>>> fetchUsers({
 //     int limit = 30,
 //     int page = 0,
 //   }) async {
@@ -61,13 +61,19 @@ class UsersRepositoryImpl extends UsersRepository {
 //       }
 
 //       return Left(
-//         '''Network error:
+//         SomeFailure(
+//           '''Network error:
 //              - status code: ${res.statusCode}
 //              - data: ${res.data}
 //           ''',
+//         ),
 //       );
 //     } catch (e) {
-//       return Left('Network error: $e');
+//       return Left(
+//         SomeFailure(
+//           'Network error: $e',
+//         ),
+//       );
 //     }
 //   }
 // }

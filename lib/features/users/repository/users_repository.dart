@@ -1,3 +1,4 @@
+import 'package:bloc_example/core/network/failure.dart';
 import 'package:bloc_example/core/network/result.dart';
 import 'package:bloc_example/features/users/model/user.dart';
 import 'package:dartz/dartz.dart';
@@ -12,7 +13,7 @@ abstract class UsersRepository {
 
 // --- EITHER (dartz) ---
 // abstract class UsersRepository {
-//   Future<Either<String, List<User>>> fetchUsers({
+//   Future<Either<Failure, List<User>>> fetchUsers({
 //     int limit,
 //     int page,
 //   });
