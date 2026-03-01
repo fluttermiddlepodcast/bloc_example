@@ -14,6 +14,7 @@ dependencies:
   flutter_bloc: ^9.0.0
   bloc_concurrency: ^0.3.0
   hydrated_bloc: ^10.0.0
+  bloc_presentation: ^1.1.2
   path_provider: ^2.1.5
   get_it: ^8.0.3
   json_annotation: ^4.8.1

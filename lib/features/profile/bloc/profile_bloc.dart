@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:bloc_example/features/profile/bloc/profile_bloc_event.dart';
+import 'package:bloc_example/features/profile/bloc/profile_bloc_presentation_event.dart';
 import 'package:bloc_example/features/profile/bloc/profile_bloc_state.dart';
 import 'package:bloc_example/features/profile/model/profile.dart';
+import 'package:bloc_presentation/bloc_presentation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState> {
+class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState>
+    with BlocPresentationMixin<ProfileBlocState, ProfileBlocPresentationEvent> {
   ProfileBloc() : super(ProfileBlocStateLoading()) {
     on<ProfileBlocEventFetch>(_onFetch);
     on<ProfileBlocEventLogIn>(_onLogIn);
@@ -20,13 +23,17 @@ class ProfileBloc extends HydratedBloc<ProfileBlocEvent, ProfileBlocState> {
     }
 
     timer = Timer.periodic(
-      const Duration(hours: 2),
+      const Duration(seconds: 30),
       (_) {
         if (state is ProfileBlocStateLoaded) {
           if ((state as ProfileBlocStateLoaded).isLoggedIn) {
             add(ProfileBlocEventLogOut());
+
+            emitPresentation(ProfileBlocPresentationEventLogOut());
           } else {
             add(ProfileBlocEventLogIn());
+
+            emitPresentation(ProfileBlocPresentationEventLogIn());
           }
         }
       },
