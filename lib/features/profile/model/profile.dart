@@ -26,4 +26,9 @@ class Profile {
 
   @override
   int get hashCode => firstName.hashCode ^ lastName.hashCode;
+
+  @override
+  String toString() {
+    return 'Profile{firstName: $firstName, lastName: $lastName}';
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:bloc_example/core/bloc/custom_bloc_observer.dart';
 import 'package:bloc_example/core/di/di.dart';
 import 'package:bloc_example/features/home/home_page.dart';
 import 'package:bloc_example/features/profile/bloc/profile_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = const CustomBlocObserver();
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
         ? HydratedStorageDirectory.web

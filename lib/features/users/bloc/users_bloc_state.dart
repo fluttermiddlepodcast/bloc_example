@@ -12,6 +12,11 @@ sealed class UsersBlocState {
 
   @override
   int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'UsersBlocState{}';
+  }
 }
 
 class UsersBlocStateLoading extends UsersBlocState {
@@ -23,6 +28,11 @@ class UsersBlocStateLoading extends UsersBlocState {
 
   @override
   int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'UsersBlocStateLoading{}';
+  }
 }
 
 class UsersBlocStateLoaded extends UsersBlocState {
@@ -53,6 +63,11 @@ class UsersBlocStateLoaded extends UsersBlocState {
       page,
     );
   }
+
+  @override
+  String toString() {
+    return 'UsersBlocStateLoaded{users (count): ${users.length}, canLoadMore: $canLoadMore, page: $page}';
+  }
 }
 
 class UsersBlocStateError extends UsersBlocState {
@@ -69,4 +84,9 @@ class UsersBlocStateError extends UsersBlocState {
 
   @override
   int get hashCode => error.hashCode;
+
+  @override
+  String toString() {
+    return 'UsersBlocStateError{error: $error}';
+  }
 }

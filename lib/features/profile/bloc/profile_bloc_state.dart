@@ -9,6 +9,11 @@ class ProfileBlocStateLoading extends ProfileBlocState {
 
   @override
   int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'ProfileBlocStateLoading{}';
+  }
 }
 
 class ProfileBlocStateLoaded extends ProfileBlocState {
@@ -30,6 +35,11 @@ class ProfileBlocStateLoaded extends ProfileBlocState {
 
   @override
   int get hashCode => Object.hash(profile, isLoggedIn);
+
+  @override
+  String toString() {
+    return 'ProfileBlocStateLoaded{profile: $profile, isLoggedIn: $isLoggedIn}';
+  }
 }
 
 class ProfileBlocStateError extends ProfileBlocState {
@@ -46,4 +56,9 @@ class ProfileBlocStateError extends ProfileBlocState {
 
   @override
   int get hashCode => error.hashCode;
+
+  @override
+  String toString() {
+    return 'ProfileBlocStateError{error: $error}';
+  }
 }
