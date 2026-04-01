@@ -21,6 +21,7 @@ dependencies:
   rxdart: 0.28.0
 
   collection:
+  dartz:
 
 dev_dependencies:
   flutter_test:

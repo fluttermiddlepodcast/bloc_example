@@ -1,5 +1,7 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:bloc_example/core/bloc/transformers/measure_time.dart';
+import 'package:bloc_example/core/network/failure.dart';
+import 'package:bloc_example/core/network/result.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_event.dart';
 import 'package:bloc_example/features/users/bloc/users_bloc_state.dart';
 import 'package:bloc_example/features/users/model/user.dart';
@@ -27,6 +29,7 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
     }
   }
 
+  // --- RECORDS ---
   Future<void> _onFetch(
     UsersBlocEventFetch event,
     Emitter<UsersBlocState> emit,
@@ -35,6 +38,7 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
       limit: 30,
       page: 0,
     );
+
     if (usersRes.$2 == null) {
       final users = usersRes.$1!;
 
@@ -50,6 +54,61 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
     }
   }
 
+  // --- EITHER (dartz) ---
+  // Future<void> _onFetch(
+  //   UsersBlocEventFetch event,
+  //   Emitter<UsersBlocState> emit,
+  // ) async {
+  //   final usersRes = await usersRepository.fetchUsers(
+  //     limit: 30,
+  //     page: 0,
+  //   );
+
+  //   usersRes.fold(
+  //     (error) => emit(
+  //       UsersBlocStateError(
+  //         error.toString(),
+  //       ),
+  //     ),
+  //     (users) {
+  //       emit(
+  //         UsersBlocStateLoaded(
+  //           users: users,
+  //           canLoadMore: users.length == 30,
+  //           page: 1,
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+  // --- SEALED CLASSES ---
+  // Future<void> _onFetch(
+  //   UsersBlocEventFetch event,
+  //   Emitter<UsersBlocState> emit,
+  // ) async {
+  //   final usersRes = await usersRepository.fetchUsers(
+  //     limit: 30,
+  //     page: 0,
+  //   );
+
+  //   usersRes.fold(
+  //     onErr: (failure) => emit(
+  //       UsersBlocStateError(
+  //         failure.toString(),
+  //       ),
+  //     ),
+  //     onOk: (users) => emit(
+  //       UsersBlocStateLoaded(
+  //         users: users,
+  //         canLoadMore: users.length == 30,
+  //         page: 1,
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // --- RECORDS ---
   Future<void> _onFetchMore(
     UsersBlocEventFetchMore event,
     Emitter<UsersBlocState> emit,
@@ -70,6 +129,7 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
       limit: 30,
       page: page,
     );
+
     if (usersRes.$2 == null) {
       final users = usersRes.$1!;
 
@@ -87,6 +147,97 @@ class UsersBloc extends HydratedBloc<UsersBlocEvent, UsersBlocState> {
       emit(UsersBlocStateError(usersRes.$2!));
     }
   }
+
+  // --- EITHER (dartz) ---
+  // Future<void> _onFetchMore(
+  //   UsersBlocEventFetchMore event,
+  //   Emitter<UsersBlocState> emit,
+  // ) async {
+  //   if (state is! UsersBlocStateLoaded) {
+  //     return;
+  //   }
+
+  //   final currState = state as UsersBlocStateLoaded;
+
+  //   if (!currState.canLoadMore) {
+  //     return;
+  //   }
+
+  //   final page = currState.page;
+
+  //   final usersRes = await usersRepository.fetchUsers(
+  //     limit: 30,
+  //     page: page,
+  //   );
+
+  //   usersRes.fold(
+  //     (error) => emit(
+  //       UsersBlocStateError(
+  //         error.toString(),
+  //       ),
+  //     ),
+  //     (users) {
+  //       emit(
+  //         UsersBlocStateLoaded(
+  //           users: [
+  //             ...currState.users,
+  //             ...users,
+  //           ],
+  //           canLoadMore: users.length == 30,
+  //           page: page + 1,
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+  // --- SEALED CLASSES ---
+  // Future<void> _onFetchMore(
+  //   UsersBlocEventFetchMore event,
+  //   Emitter<UsersBlocState> emit,
+  // ) async {
+  //   if (state is! UsersBlocStateLoaded) {
+  //     return;
+  //   }
+
+  //   final currState = state as UsersBlocStateLoaded;
+
+  //   if (!currState.canLoadMore) {
+  //     return;
+  //   }
+
+  //   final page = currState.page;
+
+  //   final usersRes = await usersRepository.fetchUsers(
+  //     limit: 30,
+  //     page: page,
+  //   );
+
+  //   usersRes.fold(
+  //     onOk: (users) {
+  //       emit(
+  //         UsersBlocStateLoaded(
+  //           users: [
+  //             ...currState.users,
+  //             ...users,
+  //           ],
+  //           canLoadMore: users.length == 30,
+  //           page: page + 1,
+  //         ),
+  //       );
+  //     },
+  //     onErr: (failure) {
+  //       switch (failure) {
+  //         case SomeFailure(:final error):
+  //           emit(
+  //             UsersBlocStateError(
+  //               error,
+  //             ),
+  //           );
+  //       }
+  //     },
+  //   );
+  // }
 
   Future<void> _onRefresh(
     UsersBlocEventRefresh event,
